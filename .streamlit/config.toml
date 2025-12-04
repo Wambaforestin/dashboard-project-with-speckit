@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#0b6e65ff"        # Teal Green for buttons/sliders
+backgroundColor = "#ffffffff"     # Very light Blue-Green background
+secondaryBackgroundColor = "#B2EBF2" # Slightly darker Blue-Green for sidebar
+textColor = "#006064"            # Darker blue for text
+font = "sans serif"
