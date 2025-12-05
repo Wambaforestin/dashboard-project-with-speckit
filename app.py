@@ -110,7 +110,7 @@ with col_chart1:
         )
         # Mise à jour du fond du graphique pour qu'il soit transparent
         fig_line.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_line, use_container_width=True)
+        st.plotly_chart(fig_line, width="stretch")
     else:
         st.info("Pas assez de données pour afficher l'évolution temporelle.")
 
@@ -133,16 +133,65 @@ with col_chart2:
             color_discrete_sequence=px.colors.qualitative.Bold # Couleurs vives
         )
         fig_pie.update_layout(paper_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_pie, use_container_width=True)
+        st.plotly_chart(fig_pie, width="stretch")
     else:
         st.warning(f"Colonne '{gender_col}' introuvable dans les données.")
+
+# --- NOUVEAUX GRAPHIQUES ---
+st.markdown("---")
+col_chart3, col_chart4 = st.columns(2)
+
+with col_chart3:
+    st.subheader("Top 10 Pays par Médailles")
+    # Group by NOC and count medals
+    medals_by_country = medals_df['NOC'].value_counts().reset_index()
+    medals_by_country.columns = ['NOC', 'Count']
+    top_10_countries = medals_by_country.head(10)
+    
+    if not top_10_countries.empty:
+        fig_bar_country = px.bar(
+            top_10_countries,
+            x='NOC',
+            y='Count',
+            title="Top 10 Pays (Médailles)",
+            labels={'Count': 'Nombre de médailles', 'NOC': 'Pays'},
+            color='Count',
+            color_continuous_scale='Viridis'
+        )
+        fig_bar_country.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+        st.plotly_chart(fig_bar_country, width="stretch")
+    else:
+        st.info("Pas assez de données pour afficher le classement par pays.")
+
+with col_chart4:
+    st.subheader("Top 10 Sports par Médailles")
+    # Group by Sport and count medals
+    medals_by_sport = medals_df['Sport'].value_counts().reset_index()
+    medals_by_sport.columns = ['Sport', 'Count']
+    top_10_sports = medals_by_sport.head(10)
+    
+    if not top_10_sports.empty:
+        fig_bar_sport = px.bar(
+            top_10_sports,
+            x='Count',
+            y='Sport',
+            orientation='h',
+            title="Top 10 Sports (Médailles)",
+            labels={'Count': 'Nombre de médailles', 'Sport': 'Sport'},
+            color='Count',
+            color_continuous_scale='Plasma'
+        )
+        fig_bar_sport.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", yaxis={'categoryorder':'total ascending'})
+        st.plotly_chart(fig_bar_sport, width="stretch")
+    else:
+        st.info("Pas assez de données pour afficher le classement par sport.")
 
 # --- TABLEAU DE DONNÉES ---
 st.markdown("---")
 st.subheader("Données brutes filtrées")
 
 with st.expander("Voir les détails des données"):
-    st.dataframe(df_filtered, use_container_width=True)
+    st.dataframe(df_filtered, width="stretch")
 
 # Footer
 st.markdown(
