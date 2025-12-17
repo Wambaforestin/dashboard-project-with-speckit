@@ -235,7 +235,7 @@ def render_choropleth_map(df_map: pd.DataFrame) -> None:
             "Silver": True,
             "Bronze": True
         },
-        color_continuous_scale=TEAL_SCALE,
+        color_continuous_scale="YlOrRd",  # Yellow-Orange-Red scale for better differentiation
         labels={
             "Total_Medals": "Total Médailles",
             "Gold": "🥇 Or",
